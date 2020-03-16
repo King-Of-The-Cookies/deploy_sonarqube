@@ -1,25 +1,31 @@
-apiVerion: v1
-kind: template
+apiVersion: v1
+kind: Template
 metadata:
-  name: SonarQube
+  name: sonarqube
   labels:
-    app: SonarQube
+    app: sonarqube
 objects:
   - apiVersion: v1
     kind: ImageStream
     metadata:
       name: sonarqube
       labels:
-        app: SonarQube
+        app: sonarqube
   - apiVersion: v1
     kind: BuildConfig
     metadata:
-      name: SonarQube
+      name: sonarqube
       labels:
-        app: SonarQube
+        app: sonarqube
     spec:
-      strategy:
-        type: Docker
       source:
         git:
-          uri: 
+          uri: https://github.com/King-Of-The-Cookies/deploy_sonarqube.git
+      output:
+        to:
+          kind: ImageStreamTag
+          name: sonarqube:1
+      strategy:
+        type: Docker
+        dockerStrategy:
+          noCache: true
