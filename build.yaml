@@ -1,0 +1,25 @@
+apiVerion: v1
+kind: template
+metadata:
+  name: SonarQube
+  labels:
+    app: SonarQube
+objects:
+  - apiVersion: v1
+    kind: ImageStream
+    metadata:
+      name: sonarqube
+      labels:
+        app: SonarQube
+  - apiVersion: v1
+    kind: BuildConfig
+    metadata:
+      name: SonarQube
+      labels:
+        app: SonarQube
+    spec:
+      strategy:
+        type: Docker
+      source:
+        git:
+          uri: 
