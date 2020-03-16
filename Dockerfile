@@ -1,5 +1,6 @@
 FROM sonarqube:latest
 USER root
-RUN useradd sonar
-RUN usermod -a -G root sonar
+RUN useradd -r sonar
+RUN chown -R sonar /opt/sonarqube
+RUN chmod 775 -R /opt/sonarqube/bin
 USER sonar
