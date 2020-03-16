@@ -7,12 +7,13 @@ metadata:
 objects:
 - apiVersion: v1
   kind: DeploymentConfig
-  name: sonarqube
   metadata:
+    name: sonarqube
     labels:
       app: sonarqube
   spec:
     replicas: 1
+
     strategy:
       type: Rolling
     template:
@@ -21,48 +22,15 @@ objects:
           app: sonarqube
       spec:
         containers:
-          image: sonarqube:1
-          imagePullPolicy: IfNotPresent
-          name: sonarqube
-          ports:
-          - containerPort: 9000
-            protocol: TCP
-          volumeMounts:
-          - mountPath: /opt/sonarqube/data
-            name: sonarqube-data
+          - image: 172.30.1.1:5000/sonarcube/sonarqube:1
+            name: sonarqube
+            ports:
+              - containerPort: 9000
+                protocol: TCP
+            volumeMounts:
+              - mountPath: /opt/sonarqube/data
+                name: sonarqube-data
         volumes:
-        - name: sonarqube-data
-          persistentVolumeClaim:
-            claimName: sonarqube-data
-    
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    name: sonarqube-data
-  spec:
-    accessModes:
-    - ReadWriteOnce
-    resources:
-      requests:
-        storage: ${SONAR_VOLUME_CAPACITY}
-parameters:
-- displayName: SonarQube version
-  value: "6.7"
-  name: SONARQUBE_VERSION
-  required: true
-- description: Password for SonarQube Server PostgreSQL backend
-  displayName: SonarQube's PostgreSQL Password
-  from: '[a-zA-Z0-9]{16}'
-  generate: expression
-  name: POSTGRESQL_PASSWORD
-  required: true
-- description: Volume space available for PostgreSQL
-  displayName: PostgreSQL Volume Capacity
-  name: POSTGRESQL_VOLUME_CAPACITY
-  required: true
-  value: 1Gi
-- description: Volume space available for SonarQube
-  displayName: SonarQube Volume Capacity
-  name: SONAR_VOLUME_CAPACITY
-  required: true
-  value: 1Gi
+          - name: sonarqube-data
+            persistentVolumeClaim:
+              claimName: "sonarqube-data"
